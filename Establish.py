@@ -34,28 +34,25 @@ eps, tau = 1e-3, 5e-3
 dT, M, p, g = 1e-2, 100, 2000, 9.8066
 
 fig = pyplot.figure()
-ax = pyplot.axes(xlim = (-0.7, 0.7), ylim = (0, 0.4))
+ax = pyplot.axes(xlim = (-0.5, 0.5), ylim = (0, 0.4))
 camera = Camera(fig)
 
-for i in range(n ** 3):
+for i in range((4 * n ** 2) - 5):
     X = Calculation(n, Ay)
+    print(i + 1, X, Ay)
     x1, x2 = X[0], X[1]
     l = x2 - x1
     y, ph1, ph2 = X[2], X[3], X[4]
-    if (i <= ((n ** 3) / 2)):
-        Ay += Uy * dT
-        Uy += (1 / M) * (p * l - M * g) * dT
-    else:
-        Ay -= Uy * dT
-        Uy -= (1 / M) * (p * l - M * g) * dT
+    Ay += Uy * dT
+    Uy += (1 / M) * (p * l - M * g) * dT
     f1 = patches.Arc((x1, y), 2 * y, 2 * y, angle = 0.0, theta1 = (3 * mt.pi / 2 - ph1) * (180 / mt.pi), theta2 = 3 * 180 / 2, 
                      linewidth = 1)
     f2 = patches.Arc((x2, y), 2 * y, 2 * y, angle = 0.0, theta1 = 3 * 180 / 2, theta2 = (3 * mt.pi / 2 + ph2), 
                      linewidth = 1)
+    pyplot.text(-0.2, 0.42, f"Ay = {Ay}")
     ax.add_patch(f1)
     ax.add_patch(f2)
     camera.snap()
-    print(i + 1, X, Ay)
 
 animation = camera.animate()
 pyplot.show()
